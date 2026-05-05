@@ -20,11 +20,11 @@ const nested = Object.freeze({
 
 Object.freeze(arr);
 
-// Test your frozen objects
-arr[0] = "changed"; // Should not change
-obj.str = "changed"; // Should not change
-nested.obj.bool = "changed"; // Should not change
+// // Test your frozen objects
+// arr[0] = "changed"; // Should not change
+// obj.str = "changed"; // Should not change
+// nested.obj.bool = "changed"; // Should not change
 
-console.log(arr);          
-console.log(obj.str);       
-console.log(nested.obj.bool); 
+// console.log(arr);          
+// console.log(obj.str);       
+// console.log(nested.obj.bool); 
