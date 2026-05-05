@@ -10,7 +10,7 @@ const obj = Object.freeze({
 });
 
 const nested = Object.freeze({
-    arr :[4, undefined, 2],
+    arr :[4, undefined, '2'],
     obj: {
         str : "Ochuka",
         num : 6,
