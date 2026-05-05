@@ -9,7 +9,7 @@ function isPositive(num){
 //         return false
 //     }
 // }
-function abs(){
+function abs(num){
     if (num < 0){
         return -num
     }
