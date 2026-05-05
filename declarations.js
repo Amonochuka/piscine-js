@@ -1,5 +1,5 @@
 const escapeStr = "\`\\/\"\'";
-const arr = [4, '2'];
+const arr = Object.freeze([4, '2']);
 
 const obj = Object.freeze({
     str :"Amon",
@@ -11,14 +11,12 @@ const obj = Object.freeze({
 
 const nested = Object.freeze({
     arr :[4, undefined, '2'],
-    obj: {
+    obj: Object.freeze({
         str : "Ochuka",
         num : 6,
         bool: true
-    }
+    })
 });
-
-Object.freeze(arr);
 
 // // Test your frozen objects
 // arr[0] = "changed"; // Should not change
