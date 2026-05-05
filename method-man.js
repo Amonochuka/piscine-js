@@ -12,7 +12,7 @@ function whisper(str){
     return '*' + str.toLowerCase() + '*'
 }
 function capitalize(str){
-    return str[0].toUpperCase() + str.slice(1).toLowerCase
+    return str[0].toUpperCase() + str.slice(1).toLowerCase()
 }
 
 // Test words function
