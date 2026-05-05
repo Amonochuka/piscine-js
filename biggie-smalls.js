@@ -7,6 +7,6 @@ const biggie = Infinity
 
 // tests
 console.log(smalls < -1e308)   // true
-console.log(isFinite(smalls))  // true
+console.log(isFinite(smalls))  // false
 console.log(biggie > 1e308)    // true
-console.log(isFinite(biggie))  // true
+console.log(isFinite(biggie))  // false
