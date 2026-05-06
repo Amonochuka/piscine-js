@@ -20,6 +20,8 @@ is.fun   = (v) => typeof v === "function"
 is.truthy = (v) => !!v
 is.falsy  = (v) => !v
 
+export { is }
+
 // // Test is.num
 // console.log(is.num(5)); // true
 // console.log(is.num(-5.5)); // true
