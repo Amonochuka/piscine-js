@@ -1,7 +1,6 @@
 const is = {}
 
 //short version; condition ? valueIfTrue : valueIfFalse
-is.num = (v) => (typeof v === "number" && !isNaN(v)) ? v : NaN
 //     if (typeof v === "number" && !isNaN(v)) {
 //         return v    // it's a number, return it
 //     } else {
@@ -9,6 +8,8 @@ is.num = (v) => (typeof v === "number" && !isNaN(v)) ? v : NaN
 //     }
 // }
 is.nan   = (v) => isNaN(v) && typeof v === "number"
+is.num = (v) => (typeof v === "number" && !isNaN(v)) ? v : NaN
+
 is.str   = (v) => typeof v === "string"
 is.bool  = (v) => typeof v === "boolean"
 is.undef = (v) => v === undefined
@@ -19,8 +20,3 @@ is.fun   = (v) => typeof v === "function"
 is.truthy = (v) => !!v
 is.falsy  = (v) => !v
 
-// Test is.num
-console.log(is.num(5)); // true
-console.log(is.num(-5.5)); // true
-console.log(is.num(NaN)); // false
-console.log(is.num("5")); // false
