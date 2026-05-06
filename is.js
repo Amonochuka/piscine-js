@@ -1,6 +1,15 @@
 const is = {}
 
-is.num   = (v) => typeof v === "number" && !isNaN(v)
+
+//short version --> condition ? valueIfTrue : valueIfFalse
+is.num   = (v) => typeof v === "number" && !isNaN(v) ? v : NaN
+// is.num = function(v) {
+//     if (typeof v === "number" && !isNaN(v)) {
+//         return v    // it's a number, return it
+//     } else {
+//         return NaN  // not a number, return NaN
+//     }
+// }
 is.nan   = (v) => isNaN(v) && typeof v === "number"
 is.str   = (v) => typeof v === "string"
 is.bool  = (v) => typeof v === "boolean"
