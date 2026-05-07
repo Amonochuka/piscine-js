@@ -65,7 +65,7 @@ function superTypeOf(v) {
         if (v instanceof Map) return "Map";
         if (v instanceof Set) return "Set";
         if (Array.isArray(v)) return "Array";
-        return "object";
+        return "Object";
     }
     return typeof v;
 }
