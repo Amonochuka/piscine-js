@@ -16,7 +16,7 @@ function setToArr(v){
 }
 function setToStr(v){
     if (v instanceof Set){
-        return v.toString()
+        return [...v].join('')
     }
 }
 function strToArr(v){
