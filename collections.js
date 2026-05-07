@@ -5,7 +5,7 @@ function arrToSet(v){
 }
 function arrToStr(v){
     if (Array.isArray(v)){
-        return v.toString()
+        return v.join(' ')
     }   
 }
 function setToArr(v){
