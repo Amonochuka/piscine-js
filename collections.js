@@ -67,7 +67,8 @@ function superTypeOf(v) {
         if (Array.isArray(v)) return "Array";
         return "Object";
     }
-    return typeof v;
+    const type = typeof v;
+    return type.charAt(0).toUpperCase() + type.slice(1)
 }
 
 
