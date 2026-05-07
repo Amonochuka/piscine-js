@@ -60,16 +60,22 @@ function strToObj(v){
     }
 }
 function superTypeOf(v) {
+    // Handle the lowercase primitives first
+    if (v === null) return "null";
+    if (v === undefined) return "undefined";
+
     if (typeof v === "object") {
-        if (v === null) return "null"; // Handle the null bug
         if (v instanceof Map) return "Map";
         if (v instanceof Set) return "Set";
         if (Array.isArray(v)) return "Array";
         return "Object";
     }
+
+    // Capitalize primitives (string -> String, number -> Number, function -> Function)
     const type = typeof v;
-    return type.charAt(0).toUpperCase() + type.slice(1)
+    return type.charAt(0).toUpperCase() + type.slice(1);
 }
+
 
 
 
