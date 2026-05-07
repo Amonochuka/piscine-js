@@ -1,7 +1,7 @@
 function getAcceleration(value){
-    let f ,m,d, Δv, Δt, t;
+    let force ,mass, distance, finalVelocity, finalTime, time;
 
-    force = value.f
+    force = value['f']
     mass = value.m
     distance = value.d
     finalVelocity = value.Δv
@@ -15,7 +15,7 @@ function getAcceleration(value){
     }else if(distance && time){
         return (2 *distance) / (time * time)
     }
-    return "imposisble"
+    return "impossible"
 }
 
 
