@@ -1,6 +1,6 @@
 function getAcceleration(F, m, dv, dt, d,t){
-    if (F!== undefined && m !== undefined){
-        return F/m
+    if (F!== undefined && m !== undefined) {
+        return F / m
     } else if (dv !== undefined && dt !== undefined) {
         return dv / dt
     } else if (d !== undefined && t !== undefined) {
