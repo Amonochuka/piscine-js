@@ -1,6 +1,7 @@
 const is = {}
 
-is.num   = (v) => typeof v === "number" && !isNaN(v)
+is.num = (v) => typeof v === "number"  
+is.nan = (v) => isNaN(v) && typeof v === "number"
 is.nan   = (v) => isNaN(v) && typeof v === "number"
 is.str   = (v) => typeof v === "string"
 is.bool  = (v) => typeof v === "boolean"
