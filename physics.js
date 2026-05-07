@@ -1,10 +1,10 @@
 function getAcceleration(F, m, dv, dt, d,t){
     if (F!== undefined && m !== undefined){
-        a === F/m
+        return F/m
     } else if (dv !== undefined && dt !== undefined) {
-        a === dv / dt                // a = Δv/Δt
+        return dv / dt
     } else if (d !== undefined && t !== undefined) {
-        a === (2 * d) / (t ** 2)    // a = 2d/t²
+        return (2 * d) / (t ** 2)
     }
     return "impossible"  // not enough info
 
