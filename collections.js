@@ -60,12 +60,16 @@ function strToObj(v){
     }
 }
 function superTypeOf(v) {
-    // This returns strings like "[object Array]", "[object Map]", etc.
-    const fullType = Object.prototype.toString.call(v);
-    
-    // Use slice to grab only the specific type name from the string
-    return fullType.slice(8, -1);
+    if (typeof v === "object") {
+        if (v === null) return "null"; // Handle the null bug
+        if (v instanceof Map) return "map";
+        if (v instanceof Set) return "set";
+        if (Array.isArray(v)) return "array";
+        return "object";
+    }
+    return typeof v;
 }
+
 
 
 // Create test data
