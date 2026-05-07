@@ -15,20 +15,57 @@ function setToArr(v){
     }   
 }
 function setToStr(v){
-    if (v instanceof Set()){
+    if (v instanceof Set){
         return v.toString()
     }
 }
 function strToArr(v){
-    
+    if (typeof v === "string"){
+        return Array.from(v)
+    }
 }
-function strToSet(v){}
-function mapToObj(v){}
-function objToArr(v){}
-function objToMap(v){}
-function arrToObj(v){}
-function strToObj(v){}
-function superTypeOf(v){}
+function strToSet(v){
+    if(typeof v === "string"){
+        return new Set(v)
+    }
+}
+function mapToObj(v){
+    if(v instanceof Map){
+        return Object.fromEntries(v)
+    }
+
+}
+
+function objToArr(v){
+    if (typeof v === "object"){
+        return Object.values(v)
+    }
+}
+
+function objToMap(v){
+    if(typeof v === "object"){
+        return new Map(Object.entries(v))
+
+   }
+}
+function arrToObj(v){
+    if (Array.isArray(v)){
+        return { ...v }
+    }
+}
+function strToObj(v){
+    if (typeof v === "string"){
+        return { ...v}
+
+    }
+}
+function superTypeOf(v) {
+    // This returns strings like "[object Array]", "[object Map]", etc.
+    const fullType = Object.prototype.toString.call(v);
+    
+    // Use slice to grab only the specific type name from the string
+    return fullType.slice(8, -1);
+}
 
 
 // Create test data
