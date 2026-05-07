@@ -1,18 +1,19 @@
 function getAcceleration(value){
-    let F ,m,d, Δv, Δt;
+    let f ,m,d, Δv, Δt, t;
 
-    force = value.F
+    force = value.f
     mass = value.m
     distance = value.d
-    velocity = value.Δv
-    time = value.Δt
+    finalVelocity = value.Δv
+    time = value.t
+    finalTime = value.Δt
 
     if (force && mass){
         return force/ mass
-    } else if(velocity && time){
-        return velocity/time
+    } else if(finalVelocity && finalTime){
+        return finalVelocity/finalTime
     }else if(distance && time){
-        return (2 *d ) / (t * t)
+        return (2 *distance) / (time * time)
     }
     return "imposisble"
 }
