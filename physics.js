@@ -1,14 +1,22 @@
-function getAcceleration(F, m, dv, dt, d,t){
-    if (F!== undefined && m !== undefined) {
-        return F / m
-    } else if (dv !== undefined && dt !== undefined) {
-        return dv / dt
-    } else if (d !== undefined && t !== undefined) {
-        return (2 * d) / (t ** 2)
-    }
-    return "impossible"  // not enough info
+function getAcceleration(value){
+    let F ,m,d, Δv, Δt;
 
+    force = value.F
+    mass = value.m
+    distance = value.d
+    velocity = value.Δv
+    time = value.Δt
+
+    if (force && mass){
+        return force/ mass
+    } else if(velocity && time){
+        return velocity/time
+    }else if(distance && time){
+        return (2 *d ) / (t * t)
+    }
+    return "imposisble"
 }
+
 
 console.log(getAcceleration({ f: 10, m: 5 })); // Should output 2
 console.log(getAcceleration({ f: 10, m: 5, t: 2, d: 100 })); // Should output 2
