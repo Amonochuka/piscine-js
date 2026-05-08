@@ -1,13 +1,5 @@
 function trunc(n) {
-    if (n >= 0) {
-        let i = 0
-        while (i + 1 <= n) i++
-        return i
-    } else {
-        let i = 0
-        while (i - 1 >= n) i--
-        return i
-    }
+    return parseInt(n)  // removes decimal part
 }
 
 function floor(n) {
