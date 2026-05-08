@@ -1,5 +1,4 @@
 function multiply(a, b) {
-    // handle negatives
     const sign = (a < 0) !== (b < 0) ? -1 : 1
     a = Math.abs(a)
     b = Math.abs(b)
@@ -8,11 +7,11 @@ function multiply(a, b) {
     for (let i = 0; i < b; i++) {
         result += a
     }
-    return result * sign
+    return sign < 0 ? -result : result
 }
 
 function divide(a, b) {
-    if (b === 0) return NaN  // can't divide by zero
+    if (b === 0) return NaN
     const sign = (a < 0) !== (b < 0) ? -1 : 1
     a = Math.abs(a)
     b = Math.abs(b)
@@ -22,7 +21,7 @@ function divide(a, b) {
         a -= b
         result++
     }
-    return result * sign
+    return sign < 0 ? -result : result 
 }
 
 function modulo(a, b) {
@@ -34,13 +33,5 @@ function modulo(a, b) {
     while (a >= b) {
         a -= b
     }
-    return a * sign
+    return sign < 0 ? -a : a  
 }
-
-// tests
-console.log(multiply(3, 4))   // 12
-console.log(multiply(-3, 4))  // -12
-console.log(divide(12, 3))    // 4
-console.log(divide(10, 3))    // 3
-console.log(modulo(10, 3))    // 1
-console.log(modulo(-10, 3))   // -1
