@@ -1,11 +1,10 @@
 function sameAmount(str, reg1, reg2) {
-    let count1 = 0
-    let count2 = 0
-    
-    for (let i = 0; i < str.length; i++) {
-        if (str.slice(i).match(reg1)) count1++
-        if (str.slice(i).match(reg2)) count2++
+    const addGlobal = (reg) => {
+        if (reg.flags.includes('g')) return reg
+        return new RegExp(reg.source, reg.flags + 'g')
     }
-    
-    return count1 === count2
+
+    const matches1 = str.match(addGlobal(reg1)) || []
+    const matches2 = str.match(addGlobal(reg2)) || []
+    return matches1.length === matches2.length
 }
