@@ -2,9 +2,11 @@ function pyramid(char, height) {
     let result = ''
     
     for (let i = 1; i <= height; i++) {
-        // spaces
-        for (let j = 1; j <= height; j++) {
-            if (j <= height - i) result += ' '
+        // spaces - account for char length
+        for (let j = 1; j <= height - i; j++) {
+            for (let s = 0; s < char.length; s++) {
+                result += ' '
+            }
         }
         // stars
         for (let k = 1; k <= 2 * i - 1; k++) {
@@ -15,5 +17,3 @@ function pyramid(char, height) {
     
     return result
 }
-
-console.log(pyramid("*", 5))
