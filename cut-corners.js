@@ -1,5 +1,15 @@
 function trunc(n) {
-    return parseInt(n)  // removes decimal part
+    const sign = n < 0 ? -1 : 1
+    n = n < 0 ? -n : n  // make positive
+    
+    let i = 0
+    let step = 1
+    // double step by addition not multiplication
+    while (i + step + step <= n) step += step
+    while (step >= 1) {
+        while (i + step <= n) i += step
+        step -= step / 2  
+    }
 }
 
 function floor(n) {
