@@ -1,12 +1,18 @@
 function trunc(n) {
+    if (n === 0) return 0
     const sign = n < 0 ? -1 : 1
-    n = n < 0 ? -n : n  // make positive
+    n = n < 0 ? -n : n
 
-    let i = 0
-    while (i + 1 <= n) i++  // increment by 1
+    let i = 1
+    while (i <= n) i += i  // double by addition (i += i same as i*2 but no *)
+    i = i / 2  // halve once
 
-    // but return with correct sign
-    return sign < 0 ? -i : i
+    let result = 0
+    while (i >= 1) {
+        if (result + i <= n) result += i
+        i = i / 2  // keep halving
+    }
+    return sign < 0 ? -result : result
 }
 
 function floor(n) {
