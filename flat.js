@@ -3,9 +3,8 @@ function flat(arr) {
     
     for (let i = 0; i < arr.length; i++) {
         if (Array.isArray(arr[i])) {
-            const flattened = flat(arr[i])  // recurse into nested array
-            for (let j = 0; j < flattened.length; j++) {
-                result.push(flattened[j])
+            for (let j = 0; j < arr[i].length; j++) {
+                result.push(arr[i][j])  // push contents, not the array
             }
         } else {
             result.push(arr[i])
