@@ -1,5 +1,5 @@
 function groupPrice(str) {
-    const regex = /[A-Z]{3}(\d+)\.(\d+)/g
+    const regex = /[$A-Z]+(\d+)\.(\d+)/g
     const result = []
     
     let match
@@ -13,6 +13,9 @@ function groupPrice(str) {
 // tests
 console.log(groupPrice("The item costs USD12.31 and the tax is EUR9.99"))
 // [["USD12.31", "12", "31"], ["EUR9.99", "9", "99"]]
+
+console.log(groupPrice("The price of the cereals is $4.00."))
+// [["$4.00", "4", "00"]]
 
 console.log(groupPrice("No prices here!"))
 // []
