@@ -1,11 +1,15 @@
 function findIP(str) {
-    const octet = '(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)'
-    const ip = `${octet}\\.${octet}\\.${octet}\\.${octet}`
+    const octet =
+        '(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)'
 
-    // optional port 0-65535
-    const port = '(?::(?:[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?'
+    const ip =
+        `${octet}\\.${octet}\\.${octet}\\.${octet}`
 
-    const regex = new RegExp(`\\b${ip}${port}\\b`, 'g')
+    const port =
+        '(?::(?:[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?'
+
+    const regex =
+        new RegExp(`(?<!\\d)${ip}${port}(?!\\d)`, 'g')
 
     return str.match(regex) || []
 }
