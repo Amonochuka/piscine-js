@@ -1,17 +1,11 @@
 function getURL(dataSet) {
+    const matches = dataSet.match(/https?:\/\/[^\s]*/g) || []
     const result = []
-    const words = dataSet.split(/\s+/)  // split by ANY whitespace (spaces AND newlines)
     
-    for (let i = 0; i < words.length; i++) {
-        const word = words[i].trim()
-        
-        // must start with http:// or https://
-        // AND must have something after ://  (at least one character)
-        if ((word.startsWith('http://') || word.startsWith('https://')) 
-            && word.length > 7  // longer than just "http://"
-            && word !== 'http://' 
-            && word !== 'https://') {
-            result.push(word)
+    for (let i = 0; i < matches.length; i++) {
+        const url = matches[i]
+        if (url !== 'http://' && url !== 'https://') {
+            result.push(url)
         }
     }
     
