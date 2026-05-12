@@ -15,6 +15,6 @@ function dayOfTheYear(date) {
   const diffInDays = Math.floor(diffInMs / msInADay);
   
   // 5. Add 1 because January 1st should return 1, not 0
-  return diffInDays;
+  return diffInDays - 1;
 }
 
