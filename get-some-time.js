@@ -1,44 +1,32 @@
 function firstDayWeek(week, year) {
-    // find January 1st of the year
     const jan1 = new Date(`${year}-01-01`)
+    const jan1Day = jan1.getDay()  // 0=Sun, 1=Mon... 6=Sat
     
-    // getDay() returns 0=Sunday, 1=Monday... 6=Saturday
-    const jan1Day = jan1.getDay()
+    // find the Monday of the week containing Jan 1
+    // if Sunday (0), Monday was 6 days ago
+    // if Monday (1), offset is 0
+    // if Tuesday (2), Monday was 1 day ago
+    const daysToMonday = jan1Day === 0 ? -6 : 1 - jan1Day
     
-    // find how many days to get to the first Monday
-    // if jan1 is Monday (1), offset is 0
-    // if jan1 is Tuesday (2), offset is -1 (go back 1 day)
-    // if jan1 is Sunday (0), offset is 1 (go forward 1 day)
-    let offset
-    if (jan1Day === 0) {
-        offset = 1  // Sunday → go forward to Monday
-    } else {
-        offset = 1 - jan1Day  // other days → go back to Monday
-    }
+    const firstWeekMonday = new Date(jan1)
+    firstWeekMonday.setDate(jan1.getDate() + daysToMonday)
     
-    // find the first Monday of the year
-    const firstMonday = new Date(jan1)
-    firstMonday.setDate(jan1.getDate() + offset)
+    // calculate target Monday
+    const targetMonday = new Date(firstWeekMonday)
+    targetMonday.setDate(firstWeekMonday.getDate() + (week - 1) * 7)
     
-    // calculate the Monday of the requested week
-    const targetMonday = new Date(firstMonday)
-    targetMonday.setDate(firstMonday.getDate() + (week - 1) * 7)
-    
-    // if target is before jan1, return jan1
-    if (targetMonday < jan1) {
-        return formatDate(jan1)
-    }
+    // if before jan1, return jan1
+    if (targetMonday < jan1) return formatDate(jan1)
     
     return formatDate(targetMonday)
 }
-
-
 //'1'.padStart(4, '0')    // '0001' ✅
 //'2024'.padStart(4, '0') // '2024' ✅ already 4 chars
+
 function formatDate(date) {
     const dd = String(date.getDate()).padStart(2, '0')
     const mm = String(date.getMonth() + 1).padStart(2, '0')
-    const yyyy = String(date.getFullYear()).padStart(4, '0')  // pad year to 4 digits!
+    const yyyy = String(date.getFullYear()).padStart(4, '0')
     return `${dd}-${mm}-${yyyy}`
 }
 
