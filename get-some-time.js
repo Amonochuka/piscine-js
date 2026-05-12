@@ -20,8 +20,8 @@ function firstDayWeek(week, year) {
     
     return formatDate(targetMonday)
 }
-//'1'.padStart(4, '0')    // '0001' ✅
-//'2024'.padStart(4, '0') // '2024' ✅ already 4 chars
+//'1'.padStart(4, '0')    // '0001' 
+//'2024'.padStart(4, '0') // '2024' 
 
 function formatDate(date) {
     const dd = String(date.getDate()).padStart(2, '0')
