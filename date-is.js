@@ -5,19 +5,21 @@ function isValid(date) {
 }
 
 function isAfter(date1, date2) {
-    return date1.getTime() > date2.getTime()
+    if (!isValid(date1) || !isValid(date2)) return false
+    return new Date(date1).getTime() > new Date(date2).getTime()
 }
 
 function isBefore(date1, date2) {
-    return date1.getTime() < date2.getTime()
+    if (!isValid(date1) || !isValid(date2)) return false
+    return new Date(date1).getTime() < new Date(date2).getTime()
 }
 
 function isFuture(date) {
-    return isValid(date) && date.getTime() > new Date().getTime()
+    return isValid(date) && new Date(date).getTime() > new Date().getTime()
 }
 
 function isPast(date) {
-    return isValid(date) && date.getTime() < new Date().getTime()
+    return isValid(date) && new Date(date).getTime() < new Date().getTime()
 }
 
 // // tests
