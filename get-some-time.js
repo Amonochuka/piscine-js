@@ -33,12 +33,12 @@ function firstDayWeek(week, year) {
 }
 
 
-//'1'.padStart(2, '0')  // '01' - pads with 0 to make length 2
-//'12'.padStart(2, '0') // '12' - already 2 chars, no padding
+//'1'.padStart(4, '0')    // '0001' ✅
+//'2024'.padStart(4, '0') // '2024' ✅ already 4 chars
 function formatDate(date) {
     const dd = String(date.getDate()).padStart(2, '0')
-    const mm = String(date.getMonth() + 1).padStart(2, '0')  // months are 0-indexed!
-    const yyyy = date.getFullYear()
+    const mm = String(date.getMonth() + 1).padStart(2, '0')
+    const yyyy = String(date.getFullYear()).padStart(4, '0')  // pad year to 4 digits!
     return `${dd}-${mm}-${yyyy}`
 }
 
