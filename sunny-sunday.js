@@ -1,8 +1,3 @@
-/**
- * sunnySunday
- * Removes Sundays from the calendar and returns the day of the week
- * in a 6-day cycle (Monday-Saturday).
- */
 function sunnySunday(date) {
   // 1. Define the custom 6-day week
   const customWeek = [
