@@ -1,5 +1,7 @@
 function format(date, pattern) {
-  const year = date.getFullYear();
+  const rawYear = date.getFullYear();
+  // Use absolute value for year tokens; negative sign is handled by the Era (G)
+  const year = Math.abs(rawYear); 
   const month = date.getMonth();
   const day = date.getDate();
   const dayOfWeek = date.getDay();
@@ -15,9 +17,13 @@ function format(date, pattern) {
     'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
   ];
 
+  // Determine correct era based on the raw year value
+  const eraShort = rawYear < 0 ? 'BC' : 'AD';
+  const eraLong = rawYear < 0 ? 'Before Christ' : 'Anno Domini';
+
   const tokens = {
-    yyyy: year.toString(),
-    yy: year.toString().slice(-2),
+    yyyy: year.toString().padStart(4, '0'),
+    yy: year.toString().slice(-2).padStart(2, '0'),
     y: year.toString(),
     MMMM: months[month],
     MMM: months[month].slice(0, 3),
@@ -36,16 +42,16 @@ function format(date, pattern) {
     ss: seconds.toString().padStart(2, '0'),
     s: seconds.toString(),
     a: hours < 12 ? 'AM' : 'PM',
-    GGGG: 'Anno Domini',
-    G: 'AD'
+    GGGG: eraLong,
+    G: eraShort
   };
 
-  // Replace tokens from longest to shortest to avoid partial replacements
   return pattern.replace(
     /yyyy|yy|y|MMMM|MMM|MM|M|dd|d|EEEE|E|HH|H|hh|h|mm|m|ss|s|a|GGGG|G/g,
     (match) => tokens[match]
   );
 }
+
 
 // Example usage:
 const d = new Date("7 January 1985, 3:08:19");
