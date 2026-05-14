@@ -16,4 +16,3 @@ function forEach(arr, callback) {
 
 // // Call our custom implementation
 // forEach(shoppingList, printItem);
-
