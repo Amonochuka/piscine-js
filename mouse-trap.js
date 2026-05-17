@@ -9,7 +9,7 @@ export function setBox() {
   document.body.append(boxElement);
 }
 
-// Spawns a new white circle using the event coordinates directly
+// Spawns a new white circle, manually offsetting it by 25px radius to center it under the cursor
 export function createCircle(e) {
   if (!e) return;
 
@@ -17,50 +17,58 @@ export function createCircle(e) {
   activeCircle.className = 'circle';
   activeCircle.style.background = 'white';
   
-  // Assign raw mouse coordinates directly to allow native CSS layout alignment
-  activeCircle.style.left = `${e.clientX}px`;
-  activeCircle.style.top = `${e.clientY}px`;
+  // Subtract the 25px radius so the center of the circle aligns with the mouse position metrics
+  activeCircle.style.left = `${e.clientX - 25}px`;
+  activeCircle.style.top = `${e.clientY - 25}px`;
   
   document.body.append(activeCircle);
-  isTrapped = false; // Reset trap state flag
+  isTrapped = false; // Reset trap threshold state
 }
 
-// Moves the active circle and traps it inside the box thresholds
+// Moves the active circle with the mouse, switching to a locked state if it enters the trap box
 export function moveCircle(e) {
   if (!e || !activeCircle || !boxElement) return;
 
-  const targetX = e.clientX;
-  const targetY = e.clientY;
-  const radius = 25; // Circle radius expected by the test calculations
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+  const radius = 25; // Circle radius required by test calculations
 
   const boxRect = boxElement.getBoundingClientRect();
 
-  // Evaluate if the cursor point is completely inside the box margins
-  const isFullyInsideX = targetX > (boxRect.left + radius) && targetX < (boxRect.right - radius);
-  const isFullyInsideY = targetY > (boxRect.top + radius) && targetY < (boxRect.bottom - radius);
-
-  // Trigger trap lock state permanently when conditions match
-  if (isFullyInsideX && isFullyInsideY) {
-    isTrapped = true;
-    activeCircle.style.background = 'var(--purple)';
-  }
-
+  // If the circle has hit the trap state, clamp its center coordinates inside the inner box bounds
   if (isTrapped) {
-    // Clamp the positions precisely to match the boundary test assertions
     const minX = boxRect.left + radius;
     const maxX = boxRect.right - radius;
     const minY = boxRect.top + radius;
     const maxY = boxRect.bottom - radius;
 
-    activeCircle.style.left = `${Math.max(minX, Math.min(targetX, maxX))}px`;
-    activeCircle.style.top = `${Math.max(minY, Math.min(targetY, maxY))}px`;
+    // Clamp mouse positions and apply the 25px visual render offset
+    const clampedX = Math.max(minX, Math.min(mouseX, maxX));
+    const clampedY = Math.max(minY, Math.min(mouseY, maxY));
+
+    activeCircle.style.left = `${clampedX - radius}px`;
+    activeCircle.style.top = `${clampedY - radius}px`;
+    return;
+  }
+
+  // The condition matches if the cursor coordinates are completely clear of the box boundaries
+  const isFullyInsideX = mouseX > (boxRect.left + radius) && mouseX < (boxRect.right - radius);
+  const isFullyInsideY = mouseY > (boxRect.top + radius) && mouseY < (boxRect.bottom - radius);
+
+  if (isFullyInsideX && isFullyInsideY) {
+    isTrapped = true;
+    activeCircle.style.background = 'var(--purple)';
+    
+    // Lock down visual layout coordinates instantly
+    activeCircle.style.left = `${mouseX - radius}px`;
+    activeCircle.style.top = `${mouseY - radius}px`;
   } else {
-    // Free-roaming tracking mode
-    activeCircle.style.left = `${targetX}px`;
-    activeCircle.style.top = `${targetY}px`;
+    // Normal trailing position track mapping
+    activeCircle.style.left = `${mouseX - radius}px`;
+    activeCircle.style.top = `${mouseY - radius}px`;
   }
 }
 
-// Bind native event execution contexts to the window runtime
+// Bind native event context parameters into the window runtime framework
 window.addEventListener('click', createCircle);
 window.addEventListener('mousemove', moveCircle);
