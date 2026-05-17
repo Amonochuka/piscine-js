@@ -2,20 +2,21 @@ import { places } from './where-do-we-go.data.js';
 
 export function explore() {
   // 1. Sort the places from North to South (highest latitude first)
+  // FIX: Explicitly target index 0 of the coordinates array to compare latitudes correctly
   const sortedPlaces = [...places].sort((a, b) => b.coordinates[0] - a.coordinates[0]);
 
   // 2. Generate fullscreen sections for each sorted destination
   sortedPlaces.forEach((place) => {
     const section = document.createElement('section');
     
-    // Sanitize accented/special characters and format matching names to file strings
+    // FIX: Format names by converting everything to lowercase, strips punctuation, and maps all spaces to hyphens
     const imgName = place.name
       .toLowerCase()
-      .normalize('NFD') // Splits accented letters into base letters + accents
-      .replace(/[\u0300-\u036f]/g, '') // Cleans out the split accent markers
-      .split(',')[0] // Truncate at commas if present
+      .normalize('NFD') // Unpacks accented letters into raw characters + diacritics
+      .replace(/[\u0300-\u036f]/g, '') // Strips out the accent characters
+      .replace(/[^a-z0-9\s-]/g, '') // Cleans special structural marks (like commas) safely
       .trim()
-      .replace(/\s+/g, '-'); // Swap spaces for hyphens
+      .replace(/\s+/g, '-'); // Translates all whitespace tokens uniformly to hyphens
 
     section.style.background = `url('./where-do-we-go_images/${imgName}.jpg')`;
     section.style.backgroundSize = 'cover';
