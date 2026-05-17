@@ -1,24 +1,52 @@
 import { places } from './where-do-we-go.data.js';
 
+// Helper function to convert coordinate strings into numeric floats
+function parseLatitude(coordStr) {
+  if (typeof coordStr === 'number') return coordStr;
+  
+  // Extract all numeric digits, decimals, and directional markers
+  const cleanStr = coordStr.toString().trim();
+  const numericValue = parseFloat(cleanStr.replace(/[^0-9.-]/g, ''));
+  
+  // If the coordinate belongs to the Southern hemisphere, convert it to a negative number
+  if (cleanStr.includes('S') || cleanStr.includes('s')) {
+    return -numericValue;
+  }
+  return numericValue;
+}
+
 export function explore() {
-  // 1. Sort the places from North to South (highest latitude first) using index 0
-  const sortedPlaces = [...places].sort((a, b) => b.coordinates[0] - a.coordinates[0]);
+  // 1. Sort the places from North to South (highest numeric latitude first)
+  const sortedPlaces = [...places].sort((a, b) => {
+    return parseLatitude(b.coordinates[0]) - parseLatitude(a.coordinates[0]);
+  });
 
   // 2. Generate fullscreen sections for each sorted destination
   sortedPlaces.forEach((place) => {
     const section = document.createElement('section');
     
-    // Split by comma to extract only the location name part, dropping country qualifiers if present
-    const rawName = place.name.includes(',') ? place.name.split(',')[0] : place.name;
-
-    // Sanitize accented/special characters and format matching names to file strings
-    const imgName = rawName
+    // Create image names using both the full string and comma-split variations
+    const formatName = (str) => str
       .toLowerCase()
-      .normalize('NFD') // Unpacks accented letters into raw characters + diacritics
-      .replace(/[\u0300-\u036f]/g, '') // Strips out the accent characters
-      .replace(/[^a-z0-9\s-]/g, '') // Cleans remaining punctuation safely
+      .normalize('NFD') // Splits accented letters into base letters + accents
+      .replace(/[\u0300-\u036f]/g, '') // Cleans out the split accent markers
+      .replace(/[^a-z0-9\s-]/g, '') // Strips structural punctuation safely
       .trim()
-      .replace(/\s+/g, '-'); // Translates all whitespace tokens uniformly to hyphens
+      .replace(/\s+/g, '-'); // Replaces spaces with hyphens
+
+    let imgName = formatName(place.name);
+
+    // Fallback adjustment: If a comma exists, look up based on the city name part 
+    // to match specific backend assets (e.g., "Skaftá River")
+    if (place.name.includes(',')) {
+      const cityPart = place.name.split(',')[0];
+      const fallbackName = formatName(cityPart);
+      
+      // List of known truncated asset name keys on the server filesystem
+      if (fallbackName === 'skafta-river' || fallbackName === 'los-caracoles-pass') {
+        imgName = fallbackName;
+      }
+    }
 
     section.style.background = `url('./where-do-we-go_images/${imgName}.jpg')`;
     section.style.backgroundSize = 'cover';
