@@ -5,7 +5,6 @@ export function grid() {
   const rangesContainer = document.createElement('div');
   rangesContainer.className = 'ranges';
 
-  // Config mapping for creating sliders cleanly
   const sliderConfigs = [
     { id: 'width', min: '200', max: '800', value: '400' },
     { id: 'fontSize', min: '20', max: '40', value: '25' },
@@ -21,7 +20,6 @@ export function grid() {
     input.max = config.max;
     input.value = config.value;
 
-    // Attach real-time input event listeners to apply updates live
     input.addEventListener('input', applyLiveStyles);
     rangesContainer.append(input);
   });
@@ -38,7 +36,7 @@ export function grid() {
   formCard.className = 'gossip';
 
   const textarea = document.createElement('textarea');
-  textarea.placeholder = 'Got some juicy news?';
+  // No placeholder text, ensuring textContent remains purely the button text when empty
   
   const submitButton = document.createElement('button');
   submitButton.type = 'submit';
@@ -53,11 +51,9 @@ export function grid() {
     const text = textarea.value.trim();
     if (!text) return;
 
-    // Create new text block card manually
     const newCard = createGossipCard(text);
     gridContainer.append(newCard);
     
-    // Reset form and cascade existing slider values to the newly added item
     textarea.value = '';
     applyLiveStyles();
   });
@@ -68,7 +64,7 @@ export function grid() {
     gridContainer.append(card);
   });
 
-  // Run style matching immediately on mount to honor default slider settings
+  // Run style matching immediately on mount
   applyLiveStyles();
 
   // Helper factory function to keep card creation consistent
@@ -77,7 +73,7 @@ export function grid() {
     card.className = 'gossip';
     card.textContent = textContent;
     return card;
-  };
+  }
 
   // 5. Global styling coordinator
   function applyLiveStyles() {
@@ -85,7 +81,6 @@ export function grid() {
     const fontSizeVal = document.getElementById('fontSize').value;
     const backgroundVal = document.getElementById('background').value;
 
-    // Target both the standard card blocks AND the form card block elements
     const cards = document.querySelectorAll('.gossip');
     
     cards.forEach(card => {
@@ -95,6 +90,3 @@ export function grid() {
     });
   }
 }
-
-// Automatically invoke grid on file loading
-grid();
