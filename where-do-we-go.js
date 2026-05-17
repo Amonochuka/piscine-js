@@ -8,9 +8,15 @@ export function explore() {
   sortedPlaces.forEach((place) => {
     const section = document.createElement('section');
     
-    // Format image filenames appropriately (e.g., lowercased and spaces removed/hyphenated if needed)
-    // Here we clean or match the provided name as structured by the project assets
-    const imgName = place.name.toLowerCase().split(',')[0].replace(/\s+/g, '-');
+    // Sanitize accented/special characters and format matching names to file strings
+    const imgName = place.name
+      .toLowerCase()
+      .normalize('NFD') // Splits accented letters into base letters + accents
+      .replace(/[\u0300-\u036f]/g, '') // Cleans out the split accent markers
+      .split(',')[0] // Truncate at commas if present
+      .trim()
+      .replace(/\s+/g, '-'); // Swap spaces for hyphens
+
     section.style.background = `url('./where-do-we-go_images/${imgName}.jpg')`;
     section.style.backgroundSize = 'cover';
     section.style.backgroundPosition = 'center';
@@ -57,7 +63,7 @@ export function explore() {
     // Construct format strings separated by line breaks \n
     locationIndicator.textContent = `${activePlace.name}\n${lat}, ${lng}`;
     locationIndicator.style.color = activePlace.color;
-    locationIndicator.href = `https://www.google.com/maps?q=${lat},${lng}`;
+    locationIndicator.href = `https://google.com{lat},${lng}`;
   }
 
   // 5. Connect tracking mechanics to document events
@@ -66,6 +72,3 @@ export function explore() {
   // Initialize values immediately on startup
   updateIndicator();
 }
-
-// Auto-run the initialization function
-explore();
