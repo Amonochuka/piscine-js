@@ -87,7 +87,7 @@ export function pick() {
         textArea.value = currentHslString;
         document.body.append(textArea);
         textArea.select();
-        document.execCommand('copy');
+        navigator.clipboard.writeText(textToCopy);
         textArea.remove();
       }
     }
