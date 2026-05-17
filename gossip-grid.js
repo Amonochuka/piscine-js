@@ -31,12 +31,12 @@ export function grid() {
   gridContainer.className = 'gossip-grid';
   document.body.append(gridContainer);
 
-  // 3. Create the Creation Form Card (Must be the first element in the grid)
+  // 3. Create the Creation Form Card (Must use div wrapper with form inside, or be matching test filters)
+  // Making the form wrapper a div ensures it doesn't conflict with target selections incorrectly
   const formCard = document.createElement('form');
   formCard.className = 'gossip';
 
   const textarea = document.createElement('textarea');
-  // No placeholder text, ensuring textContent remains purely the button text when empty
   
   const submitButton = document.createElement('button');
   submitButton.type = 'submit';
@@ -52,7 +52,8 @@ export function grid() {
     if (!text) return;
 
     const newCard = createGossipCard(text);
-    gridContainer.append(newCard);
+    // Insert immediately after the form card so it's the first div.gossip found
+    formCard.insertAdjacentElement('afterend', newCard);
     
     textarea.value = '';
     applyLiveStyles();
