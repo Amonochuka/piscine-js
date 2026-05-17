@@ -1,43 +1,57 @@
 import { places } from './where-do-we-go.data.js';
 
-// Helper function to convert coordinate strings into numeric floats
+// Fully parses DMS (Degrees-Minutes-Seconds) and Decimal Degree strings into standard numeric floats
 function parseLatitude(coordStr) {
   if (typeof coordStr === 'number') return coordStr;
   
-  // Extract index 0 if it's passed as an array, or process the string directly
-  const str = Array.isArray(coordStr) ? coordStr[0] : coordStr;
-  const cleanStr = str.toString().trim();
-  const numericValue = parseFloat(cleanStr.replace(/[^0-9.-]/g, ''));
+  // Extract coordinate string from array references if wrapped
+  const rawStr = Array.isArray(coordStr) ? coordStr[0] : coordStr;
+  const cleanStr = rawStr.toString().trim();
   
-  // If the coordinate belongs to the Southern hemisphere, convert it to a negative number
-  if (cleanStr.includes('S') || cleanStr.includes('s')) {
-    return -numericValue;
+  let decimalDegrees = 0;
+
+  // Check if string follows a DMS format (contains degree symbols)
+  if (cleanStr.includes('°')) {
+    // Split text by measurement token dividers
+    const parts = cleanStr.split(/[°′″'\s]+/);
+    const degrees = parseFloat(parts[0]) || 0;
+    const minutes = parseFloat(parts[1]) || 0;
+    const seconds = parseFloat(parts[2]) || 0;
+    
+    decimalDegrees = degrees + (minutes / 60) + (seconds / 3600);
+  } else {
+    // Standard basic fallback for native decimal strings
+    decimalDegrees = parseFloat(cleanStr.replace(/[^0-9.-]/g, ''));
   }
-  return numericValue;
+
+  // Convert to negative value if the location belongs to the Southern hemisphere
+  if (cleanStr.includes('S') || cleanStr.includes('s')) {
+    return -decimalDegrees;
+  }
+  return decimalDegrees;
 }
 
 export function explore() {
-  // 1. Sort the places from North to South (highest numeric latitude first)
+  // 1. Sort the places from North to South using our high-precision coordinate parser
   const sortedPlaces = [...places].sort((a, b) => {
-    return parseLatitude(b.coordinates) - parseLatitude(a.coordinates);
+    return parseLatitude(b.coordinates[0]) - parseLatitude(a.coordinates[0]);
   });
 
   // 2. Generate fullscreen sections for each sorted destination
   sortedPlaces.forEach((place) => {
     const section = document.createElement('section');
     
-    // FIX: Always split by comma to isolate the city/landmark name.
-    // This perfectly matches the file names on the server (e.g., 'Lisse', 'Skaftá River')
+    // Always split by comma to match the server asset naming structure
     const primaryName = place.name.split(',')[0];
 
-    // Sanitize accented/special characters and format matching names to file strings
+    // Clean strings, unpack accent characters, and map spaces to hyphens
     const imgName = primaryName
       .toLowerCase()
-      .normalize('NFD') // Unpacks accented letters into raw characters + diacritics
-      .replace(/[\u0300-\u036f]/g, '') // Strips out the accent characters
-      .replace(/[^a-z0-9\s-]/g, '') // Cleans remaining punctuation safely
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
       .trim()
-      .replace(/\s+/g, '-'); // Translates all whitespace tokens uniformly to hyphens
+      .replace(/\s+/g, '-');
 
     section.style.background = `url('./where-do-we-go_images/${imgName}.jpg')`;
     section.style.backgroundSize = 'cover';
@@ -58,7 +72,6 @@ export function explore() {
   directionIndicator.className = 'direction';
   document.body.append(directionIndicator);
 
-  // Keep track of the last scroll position to identify scroll directions
   let lastScrollY = window.scrollY;
 
   // Helper updater to keep indicator content fully in sync
