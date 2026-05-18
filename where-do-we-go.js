@@ -7,7 +7,6 @@ function parseLatitude(coordStr) {
   const cleanStr = coordStr.toString().trim();
   let decimalDegrees = 0;
 
-  // Check if string follows a DMS format (contains degree symbols)
   if (cleanStr.includes('°')) {
     const parts = cleanStr.split(/[°′″'\s]+/);
     const degrees = parseFloat(parts[0]) || 0;
@@ -16,11 +15,9 @@ function parseLatitude(coordStr) {
     
     decimalDegrees = degrees + (minutes / 60) + (seconds / 3600);
   } else {
-    // Basic fallback parsing for native decimal strings
     decimalDegrees = parseFloat(cleanStr.replace(/[^0-9.-]/g, ''));
   }
 
-  // Convert coordinate to a negative number if it belongs to the Southern hemisphere
   if (cleanStr.includes('S') || cleanStr.includes('s')) {
     return -decimalDegrees;
   }
@@ -40,7 +37,6 @@ export function explore() {
     // Always split by comma to isolate the city/landmark name string safely
     const primaryName = place.name.split(',')[0];
 
-    // Clean structural symbols, unpack accent characters, and map spaces to hyphens
     const imgName = primaryName
       .toLowerCase()
       .normalize('NFD')
@@ -94,7 +90,7 @@ export function explore() {
     locationIndicator.textContent = `${activePlace.name}\n${activePlace.coordinates}`;
     locationIndicator.style.color = activePlace.color;
     
-    locationIndicator.href = `https://google.com{encodeURIComponent(activePlace.coordinates)}`;
+    locationIndicator.href = `https://google.com{activePlace.coordinates}`;
   }
 
   // 5. Connect tracking mechanics to document events
