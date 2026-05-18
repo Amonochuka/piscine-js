@@ -4,10 +4,8 @@ import { places } from './where-do-we-go.data.js';
 function parseLatitude(coordStr) {
   if (typeof coordStr === 'number') return coordStr;
   
-  // Extract coordinate string from array references if wrapped
-  const rawStr = Array.isArray(coordStr) ? coordStr[0] : coordStr;
-  const cleanStr = rawStr.toString().trim();
-  
+  // Extract coordinate string safely
+  const cleanStr = coordStr.toString().trim();
   let decimalDegrees = 0;
 
   // Check if string follows a DMS format (contains degree symbols)
@@ -32,7 +30,8 @@ function parseLatitude(coordStr) {
 }
 
 export function explore() {
-  // 1. Sort the places from North to South using our high-precision coordinate parser
+  // 1. Sort the places from North to South (highest numeric latitude first)
+  // FIX: Explicitly pass index 0 of the coordinates array to compare only latitudes
   const sortedPlaces = [...places].sort((a, b) => {
     return parseLatitude(b.coordinates[0]) - parseLatitude(a.coordinates[0]);
   });
@@ -41,7 +40,7 @@ export function explore() {
   sortedPlaces.forEach((place) => {
     const section = document.createElement('section');
     
-    // Always split by comma to match the server asset naming structure
+    // Always split by comma to isolate the city/landmark name.
     const primaryName = place.name.split(',')[0];
 
     // Clean strings, unpack accent characters, and map spaces to hyphens
