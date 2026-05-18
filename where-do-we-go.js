@@ -4,7 +4,6 @@ import { places } from './where-do-we-go.data.js';
 function parseLatitude(coordStr) {
   if (typeof coordStr === 'number') return coordStr;
   
-  // Clean up whitespace tokens safely
   const cleanStr = coordStr.toString().trim();
   let decimalDegrees = 0;
 
@@ -30,7 +29,6 @@ function parseLatitude(coordStr) {
 
 export function explore() {
   // 1. Sort the places from North to South (highest numeric latitude first)
-  // FIX: Access .coordinates directly as a single string field without [0]
   const sortedPlaces = [...places].sort((a, b) => {
     return parseLatitude(b.coordinates) - parseLatitude(a.coordinates);
   });
@@ -39,7 +37,7 @@ export function explore() {
   sortedPlaces.forEach((place) => {
     const section = document.createElement('section');
     
-    // Split by comma to isolate the city/landmark name string safely
+    // Always split by comma to isolate the city/landmark name string safely
     const primaryName = place.name.split(',')[0];
 
     // Clean structural symbols, unpack accent characters, and map spaces to hyphens
@@ -91,16 +89,11 @@ export function explore() {
     const safeIndex = Math.max(0, Math.min(activeIndex, sortedPlaces.length - 1));
     
     const activePlace = sortedPlaces[safeIndex];
-    
-    // Assuming coordinates are saved as a split pair or comma string in the dataset object
-    // Handle split assignments uniformly for text visualization maps
-    const coords = activePlace.coordinates.split(',');
-    const lat = coords[0] ? coords[0].trim() : '';
-    const lng = coords[1] ? coords[1].trim() : '';
 
-    // Construct format strings separated by line breaks \n
+    // Construct format strings separated by a line break \n
     locationIndicator.textContent = `${activePlace.name}\n${activePlace.coordinates}`;
     locationIndicator.style.color = activePlace.color;
+    
     locationIndicator.href = `https://google.com{encodeURIComponent(activePlace.coordinates)}`;
   }
 
