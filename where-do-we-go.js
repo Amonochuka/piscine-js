@@ -1,16 +1,15 @@
 import { places } from './where-do-we-go.data.js';
 
-// Fully parses DMS (Degrees-Minutes-Seconds) and Decimal Degree strings into standard numeric floats
+// Parses decimal degree strings or DMS strings accurately into comparable numeric floats
 function parseLatitude(coordStr) {
   if (typeof coordStr === 'number') return coordStr;
   
-  // Extract coordinate string safely
+  // Clean up whitespace tokens safely
   const cleanStr = coordStr.toString().trim();
   let decimalDegrees = 0;
 
   // Check if string follows a DMS format (contains degree symbols)
   if (cleanStr.includes('°')) {
-    // Split text by measurement token dividers
     const parts = cleanStr.split(/[°′″'\s]+/);
     const degrees = parseFloat(parts[0]) || 0;
     const minutes = parseFloat(parts[1]) || 0;
@@ -18,11 +17,11 @@ function parseLatitude(coordStr) {
     
     decimalDegrees = degrees + (minutes / 60) + (seconds / 3600);
   } else {
-    // Standard basic fallback for native decimal strings
+    // Basic fallback parsing for native decimal strings
     decimalDegrees = parseFloat(cleanStr.replace(/[^0-9.-]/g, ''));
   }
 
-  // Convert to negative value if the location belongs to the Southern hemisphere
+  // Convert coordinate to a negative number if it belongs to the Southern hemisphere
   if (cleanStr.includes('S') || cleanStr.includes('s')) {
     return -decimalDegrees;
   }
@@ -31,19 +30,19 @@ function parseLatitude(coordStr) {
 
 export function explore() {
   // 1. Sort the places from North to South (highest numeric latitude first)
-  // FIX: Explicitly pass index 0 of the coordinates array to compare only latitudes
+  // FIX: Access .coordinates directly as a single string field without [0]
   const sortedPlaces = [...places].sort((a, b) => {
-    return parseLatitude(b.coordinates[0]) - parseLatitude(a.coordinates[0]);
+    return parseLatitude(b.coordinates) - parseLatitude(a.coordinates);
   });
 
   // 2. Generate fullscreen sections for each sorted destination
   sortedPlaces.forEach((place) => {
     const section = document.createElement('section');
     
-    // Always split by comma to isolate the city/landmark name.
+    // Split by comma to isolate the city/landmark name string safely
     const primaryName = place.name.split(',')[0];
 
-    // Clean strings, unpack accent characters, and map spaces to hyphens
+    // Clean structural symbols, unpack accent characters, and map spaces to hyphens
     const imgName = primaryName
       .toLowerCase()
       .normalize('NFD')
@@ -92,12 +91,17 @@ export function explore() {
     const safeIndex = Math.max(0, Math.min(activeIndex, sortedPlaces.length - 1));
     
     const activePlace = sortedPlaces[safeIndex];
-    const [lat, lng] = activePlace.coordinates;
+    
+    // Assuming coordinates are saved as a split pair or comma string in the dataset object
+    // Handle split assignments uniformly for text visualization maps
+    const coords = activePlace.coordinates.split(',');
+    const lat = coords[0] ? coords[0].trim() : '';
+    const lng = coords[1] ? coords[1].trim() : '';
 
     // Construct format strings separated by line breaks \n
-    locationIndicator.textContent = `${activePlace.name}\n${lat}, ${lng}`;
+    locationIndicator.textContent = `${activePlace.name}\n${activePlace.coordinates}`;
     locationIndicator.style.color = activePlace.color;
-    locationIndicator.href = `https://google.com{lat},${lng}`;
+    locationIndicator.href = `https://google.com{encodeURIComponent(activePlace.coordinates)}`;
   }
 
   // 5. Connect tracking mechanics to document events
