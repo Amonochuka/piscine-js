@@ -89,9 +89,9 @@ export function explore() {
     // Construct format strings separated by a line break \n
     locationIndicator.textContent = activePlace.name + '\n' + activePlace.coordinates;
     locationIndicator.style.color = activePlace.color;
+
+    locationIndicator.href = `https://www.google.com/maps?q=${activePlace.coordinates}`
     
-    // Standard string addition prevents rendering software formatting issues
-    locationIndicator.href = 'https://google.com' + encodeURIComponent(activePlace.coordinates);
   }
 
   // 5. Connect tracking mechanics to document events
